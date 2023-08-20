@@ -3,6 +3,7 @@
 require('creep-tasks');
 let roleHarvester = require('role.harvester');
 let roleUpgrader = require('role.upgrader');
+let rolePeon = require('role.peon');
 
 
 /** Global Restart Event Logic */
@@ -16,12 +17,11 @@ module.exports.loop = function () {
     // Separate creeps by role
     let harvesters = _.filter(creeps, creep => creep.name.includes("Harvester"));
     let upgraders = _.filter(creeps, creep => creep.name.includes("Upgrader"));
+    let peons = _.filter(creeps, creep => creep.name.includes("Peon"));
 
     // Spawn creeps as needed
-    if (harvesters.length < 3) {
-        spawn.spawnCreep([WORK, CARRY, MOVE], "Harvester" + Game.time);
-    } else if (upgraders.length < 2) {
-        spawn.spawnCreep([WORK, CARRY, MOVE], "Upgrader" + Game.time);
+    if (peons.length < 3) {
+        spawn.spawnCreep([WORK, CARRY, MOVE], "Peon" + Game.time);
     }
 
     // Handle all roles, assigning each creep a new task if they are currently idle
@@ -33,6 +33,11 @@ module.exports.loop = function () {
     for (let upgrader of upgraders) {
         if (upgrader.isIdle) {
             roleUpgrader.newTask(upgrader);
+        }
+    }
+    for (let peon of peons) {
+        if (peon.isIdle) {
+            rolePeon.newTask(peon);
         }
     }
 
