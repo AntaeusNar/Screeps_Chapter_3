@@ -3,11 +3,12 @@
  */
 
 /** Imports */
-require('class.TheDirector');
+const TheDirector = require('./class.TheDirector');
 
 
 /** One-Time Global Effects */
 console.log('<<<<< Global Restart >>>>>');
+let director = new TheDirector;
 
 
 /** The Main Loop */
