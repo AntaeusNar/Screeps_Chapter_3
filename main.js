@@ -3,7 +3,7 @@
  */
 
 /** Imports */
-
+require('class.TheDirector');
 
 
 /** One-Time Global Effects */
@@ -14,7 +14,7 @@ console.log('<<<<< Global Restart >>>>>');
 function mainLoop() {
 
 
-    /** Added simply to allow for unused CPU to get converted into ingame credits */
+    /** Added simply to allow for unused CPU to get converted into in game credits */
     if(Game.cpu.bucket == 10000) {
         Game.cpu.generatePixel();
     }
