@@ -9,6 +9,9 @@ class TheDirector {
      * @returns {Object} a director
       */
     constructor() {
+        if (Memory.Director == undefined) {
+            Memory.Director = {};
+        }
 
     }
 
