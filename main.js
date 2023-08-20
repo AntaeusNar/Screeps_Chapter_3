@@ -2,6 +2,12 @@
  * 
  */
 
+/** Imports */
+
+
+
+/** One-Time Global Effects */
+console.log('<<<<< Global Restart >>>>>');
 
 
 /** The Main Loop */
@@ -15,4 +21,4 @@ function mainLoop() {
 }
 
 /** This export gives the main loop over to the game for execution. */
-modules.exports.loop = mainLoop;
+module.exports.loop = mainLoop;
