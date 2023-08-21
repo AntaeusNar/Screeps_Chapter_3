@@ -10,7 +10,7 @@ console.log('<<<< Global Restart Event >>>>');
 module.exports.loop = function () {
 
     //Clean memory
-    for(let name in Memory.creeps) {G
+    for(let name in Memory.creeps) {
         if(!Game.creeps[name]) {
             delete Memory.creeps[name];
             console.log('INFO: Clearing non-existing creep memory:', name);
