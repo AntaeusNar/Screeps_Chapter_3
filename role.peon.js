@@ -37,7 +37,7 @@ let rolePeon = {
                             creep.task = Task.withdraw(container);
                         } else {
                             //mine some energy....
-                            let source = _.sortBy(creep.room.find(FIND_SOURCES), [function(s) {return s.targetedBy.length;}])[0];
+                            let source = _.sortBy(creep.room.find(FIND_SOURCES), (s) => s.targetedBy.length)[0];
                             creep.task = Tasks.harvest(source);
                         }
                     }
