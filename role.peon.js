@@ -41,14 +41,15 @@ let rolePeon = {
                     }
                 }
             }
-
-
-         
         } else {
             //lets find something to do!
-            let spawn = Game.spawns['Spawn1'];
-            if (spawn.store.getFreeCapacity(RESOURCE_ENERGY) > 0) {
-                creep.task = Tasks.transfer(spawn);
+            //fill towers, extensions, spawns
+            let fill = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                filter: s => (s.structureType == STRUCTURE_TOWER || s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) &&
+                    s.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && s.targetedBy.length <= 1
+            });
+            if (fill != undefined) {
+                creep.task = Tasks.transfer(fill);
             } else {
                 creep.task = Tasks.upgrade(creep.room.controller);
             }
