@@ -6,7 +6,7 @@ let rolePeon = {
     newTask: function (creep) {
         if (creep.carry.energy == 0) {
             //when completely out of energy...
-            // Harvest from an empty source if there is one, else pick any source
+
             let options = {
                 moveOptions: {
                     visualizePathStyle: {
@@ -14,18 +14,36 @@ let rolePeon = {
                         opacity: .5, 
                         strokeWidth: .1},
                     },
-                }
-            let sources = creep.room.find(FIND_SOURCES);
-            let spreadsource = _.sortBy(sources, [function(s) {return s.targetedBy.length}])[0];
-            creep.task = Tasks.harvest(spreadsource, options);
-            /**
-            let unattendedSource = _.filter(sources, source => source.targetedBy.length == 0)[0];
-            if (unattendedSource) {
-                creep.task = Tasks.harvest(unattendedSource, options);
+            }
+            
+            //Selections
+            let pickup = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
+                filter: r => r.resourceType == RESOURCE_ENERGY
+            });
+            if (pickup != undefined) {
+                creep.task = Tasks.pickup(pickup, RESOURCE_ENERGY);
             } else {
-                creep.task = Tasks.harvest(sources[0], options);
-            } 
-            */           
+                let tombstone = _.sortBy(creep.room.find(FIND_TOMBSTONES, {
+                    filter: t => t.store.getUsedCapacity(RESOURCE_ENERGY) > 0
+                }), [function(s) {return s.targetedBy.length;}])[0];
+
+                if (tombstone != undefined) {
+                    creep.task = Tasks.withdraw(tombstone);
+                } else {
+                    let ruin = _.sortBy(creep.room.find(FIND_RUINS, {
+                        filter: t => t.store.getUsedCapacity(RESOURCE_ENERGY) > 0
+                    }), [function(s) {return s.targetedBy.length;}])[0];
+                    if (ruin != undefined) {
+                        creep.task = Tasks.withdraw(ruin)
+                    } else {
+                        let source = _.sortBy(creep.room.find(FIND_SOURCES), [function(s) {return s.targetedBy.length;}])[0];
+                        creep.task = Tasks.harvest(source, options);
+                    }
+                }
+            }
+
+
+         
         } else {
             //lets find something to do!
             let spawn = Game.spawns['Spawn1'];

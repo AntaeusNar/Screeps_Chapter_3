@@ -16,8 +16,8 @@ module.exports.loop = function () {
     let peons = _.filter(creeps, creep => creep.name.includes("Peon"));
 
     // Spawn creeps as needed
-    if (peons.length < 3) {
-        spawn.spawnCreep([WORK, CARRY, MOVE], "Peon" + Game.time);
+    if (peons.length < 4) {
+        spawn.spawnCreep([WORK, CARRY, CARRY, MOVE], "Peon" + Game.time);
     }
 
     // Handle all roles, assigning each creep a new task if they are currently idle
