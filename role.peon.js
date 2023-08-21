@@ -23,16 +23,16 @@ let rolePeon = {
             if (pickup != undefined) {
                 creep.task = Tasks.pickup(pickup, RESOURCE_ENERGY);
             } else {
-                let tombstone = _.sortBy(creep.room.find(FIND_TOMBSTONES, {
+                let tombstone = creep.pos.findClosestByPath(FIND_TOMBSTONES, {
                     filter: t => t.store.getUsedCapacity(RESOURCE_ENERGY) > 0
-                }), [function(s) {return s.targetedBy.length;}])[0];
+                });
 
                 if (tombstone != undefined) {
                     creep.task = Tasks.withdraw(tombstone);
                 } else {
-                    let ruin = _.sortBy(creep.room.find(FIND_RUINS, {
+                    let ruin = creep.pos.findClosestByPath(FIND_RUINS, {
                         filter: t => t.store.getUsedCapacity(RESOURCE_ENERGY) > 0
-                    }), [function(s) {return s.targetedBy.length;}])[0];
+                    });
                     if (ruin != undefined) {
                         creep.task = Tasks.withdraw(ruin)
                     } else {
