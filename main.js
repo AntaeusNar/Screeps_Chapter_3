@@ -1,8 +1,6 @@
 // Example Screeps bot built using creep-tasks
 
 require('creep-tasks');
-let roleHarvester = require('role.harvester');
-let roleUpgrader = require('role.upgrader');
 let rolePeon = require('role.peon');
 
 
@@ -15,8 +13,6 @@ module.exports.loop = function () {
     let creeps = _.values(Game.creeps);
 
     // Separate creeps by role
-    let harvesters = _.filter(creeps, creep => creep.name.includes("Harvester"));
-    let upgraders = _.filter(creeps, creep => creep.name.includes("Upgrader"));
     let peons = _.filter(creeps, creep => creep.name.includes("Peon"));
 
     // Spawn creeps as needed
@@ -25,16 +21,6 @@ module.exports.loop = function () {
     }
 
     // Handle all roles, assigning each creep a new task if they are currently idle
-    for (let harvester of harvesters) {
-        if (harvester.isIdle) {
-            roleHarvester.newTask(harvester);
-        }
-    }
-    for (let upgrader of upgraders) {
-        if (upgrader.isIdle) {
-            roleUpgrader.newTask(upgrader);
-        }
-    }
     for (let peon of peons) {
         if (peon.isIdle) {
             rolePeon.newTask(peon);
