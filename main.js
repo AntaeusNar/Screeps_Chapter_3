@@ -24,7 +24,7 @@ module.exports.loop = function () {
     let peons = _.filter(creeps, creep => creep.name.includes("Peon"));
 
     // Spawn creeps as needed
-    if (peons.length < 4) {
+    if (peons.length < 6) {
         spawn.spawnCreep([WORK, CARRY, CARRY, MOVE], "Peon" + Game.time);
     }
 
@@ -43,6 +43,7 @@ module.exports.loop = function () {
     /** Added simply to allow for unused CPU to get converted into in game credits */
     if(Game.cpu.bucket == 10000) {
         Game.cpu.generatePixel();
+        console.log("To much brain power.");
     }
 
 };
