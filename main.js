@@ -2,13 +2,20 @@
 
 require('creep-tasks');
 require('prototype.tower');
-let rolePeon = require('role.peon');
+const lib = {
+    math: require('lib.math')
+};
+const rolePeon = require('role.peon');
 
 
 /** Global Restart Event Logic */
 console.log('<<<< Global Restart Event >>>>');
+if (Memory.CpuData == undefined) {
+    Memory.CpuData = [];
+}
 
 module.exports.loop = function () {
+    let startcpu = Game.cpu.getUsed();
 
     //Clean memory
     for(let name in Memory.creeps) {
@@ -31,7 +38,7 @@ module.exports.loop = function () {
     let peons = _.filter(creeps, creep => creep.name.includes("Peon"));
 
     // Spawn creeps as needed
-    if (peons.length < 6) {
+    if (peons.length < Memory.targetNumberCreeps) {
         let maxEnergy = spawn.room.energyAvailable;
         let bodyunit = [WORK, CARRY, MOVE, MOVE];
         let bodyunitcost = 250;
@@ -60,5 +67,18 @@ module.exports.loop = function () {
         Game.cpu.generatePixel();
         console.log("To much brain power.");
     }
+
+    let endcpu = Game.cpu.getUsed();
+    let length = Memory.CpuData.push(endcpu - startcpu);
+    if (length > 30) {
+        Memory.CpuData.shift();
+    }
+    let sum = Memory.CpuData.reduce((partialSum, a) => partialSum + a, 0);
+    let rollingAvg = sum/30;
+    let targetNumberCreeps = Math.floor(15/(rollingAvg/Object.keys(Game.creeps).length));
+    Memory.targetNumberCreeps = targetNumberCreeps;
+    console.log('Used CPU: ' + (endcpu - startcpu) + " Moving Average: " + rollingAvg + " Target # Creeps: " + targetNumberCreeps);
+
+
 
 };
