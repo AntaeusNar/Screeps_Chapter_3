@@ -43,8 +43,8 @@ module.exports.loop = function () {
     if (creeps.length < targetNumberCreeps) {
 
 
-        //spawn peons last keeping less then half of all aviable creeps as peons
-        if (spawn.spawing == null && peons.length < Math.floor(targetNumberCreeps/2)) {
+        //spawn peons last keeping less then third of all aviable creeps as peons
+        if (spawn.spawing == null && peons.length < Math.floor(targetNumberCreeps/3)) {
             let maxEnergy = spawn.room.energyAvailable;
             let bodyunit = [WORK, CARRY, MOVE, MOVE];
             let bodyunitcost = 250;

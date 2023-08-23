@@ -12,6 +12,7 @@ let rolePeon = {
                 filter: r => r.resourceType == RESOURCE_ENERGY
             });
             if (pickup != undefined) {
+                creep.say('Picking up');
                 creep.task = Tasks.pickup(pickup, RESOURCE_ENERGY);
             } else {
                 //or rob a grave?
@@ -20,6 +21,7 @@ let rolePeon = {
                 });
 
                 if (tombstone != undefined) {
+                    creep.say('Grave Robbing');
                     creep.task = Tasks.withdraw(tombstone);
                 } else {
                     //plunder a ruin?
@@ -27,6 +29,7 @@ let rolePeon = {
                         filter: t => t.store.getUsedCapacity(RESOURCE_ENERGY) > 0
                     });
                     if (ruin != undefined) {
+                        creep.say('Plundering');
                         creep.task = Tasks.withdraw(ruin);
                     } else {
                         //empty a container?
@@ -34,9 +37,11 @@ let rolePeon = {
                             filter: s => s.structureType == STRUCTURE_CONTAINER && s.store.getUsedCapacity(RESOURCE_ENERGY) > 0
                         }), [function(s) {return s.targetedBy.length}])[0];
                         if (container != undefined) {
+                            creep.say('Withdrawing');
                             creep.task = Task.withdraw(container);
                         } else {
                             //mine some energy....
+                            creep.say('Harvesting');
                             let source = _.sortBy(creep.room.find(FIND_SOURCES), (s) => s.targetedBy.length)[0];
                             creep.task = Tasks.harvest(source);
                         }
@@ -51,14 +56,17 @@ let rolePeon = {
                     s.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && s.targetedBy.length <= 2
             });
             if (fill != undefined) {
+                creep.say('Filling');
                 creep.task = Tasks.transfer(fill);
             } else {
                 //lets build some things?
                 let build = creep.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES);
                 if (build != undefined) {
+                    creep.say('Building');
                     creep.task = Tasks.build(build);
                 } else {
                     //upgrade that tower...
+                    creep.say('Upgrading');
                     creep.task = Tasks.upgrade(creep.room.controller);                    
                 }
 
