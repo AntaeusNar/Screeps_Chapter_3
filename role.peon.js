@@ -48,7 +48,7 @@ let rolePeon = {
             //fill towers, extensions, spawns?
             let fill = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
                 filter: s => (s.structureType == STRUCTURE_TOWER || s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) &&
-                    s.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && s.targetedBy.length <= 1
+                    s.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && s.targetedBy.length <= 2
             });
             if (fill != undefined) {
                 creep.task = Tasks.transfer(fill);
