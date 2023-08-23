@@ -2,9 +2,6 @@
 
 require('creep-tasks');
 require('prototype.tower');
-const lib = {
-    math: require('lib.math')
-};
 const rolePeon = require('role.peon');
 
 
@@ -24,6 +21,11 @@ module.exports.loop = function () {
             console.log('INFO: Clearing non-existing creep memory:', name);
         }
     } // end of creep cleaning
+
+    //Target Number of creeps based on CPU usage
+    let sum = Memory.CpuData.reduce((partialSum, a) => partialSum + a, 0);
+    let rollingAvg = sum/30;
+    let targetNumberCreeps = Math.floor(15/(rollingAvg/Object.keys(Game.creeps).length));
     
     //run towers
     let towers = _.filter(Game.structures, s => s.structureType == STRUCTURE_TOWER);
@@ -38,17 +40,22 @@ module.exports.loop = function () {
     let peons = _.filter(creeps, creep => creep.name.includes("Peon"));
 
     // Spawn creeps as needed
-    if (peons.length < Memory.targetNumberCreeps) {
-        let maxEnergy = spawn.room.energyAvailable;
-        let bodyunit = [WORK, CARRY, MOVE, MOVE];
-        let bodyunitcost = 250;
-        let bodysize = Math.floor(maxEnergy/bodyunitcost);
-        let realbody = [];
-        for (let i = 0; i < bodysize; i++) {
-            realbody = realbody.concat(bodyunit);
+    if (creeps.length < targetNumberCreeps) {
+
+
+        //spawn peons last keeping less then half of all aviable creeps as peons
+        if (spawn.spawing == null && peons.length < Math.floor(targetNumberCreeps/2)) {
+            let maxEnergy = spawn.room.energyAvailable;
+            let bodyunit = [WORK, CARRY, MOVE, MOVE];
+            let bodyunitcost = 250;
+            let bodysize = Math.floor(maxEnergy/bodyunitcost);
+            let realbody = [];
+            for (let i = 0; i < bodysize; i++) {
+                realbody = realbody.concat(bodyunit);
+            }
+            spawn.spawnCreep(realbody, "Peon" + Game.time);
         }
-        spawn.spawnCreep(realbody, "Peon" + Game.time);
-    }
+    } //end of creep spawning logic
 
     // Handle all roles, assigning each creep a new task if they are currently idle
     for (let peon of peons) {
@@ -73,12 +80,6 @@ module.exports.loop = function () {
     if (length > 30) {
         Memory.CpuData.shift();
     }
-    let sum = Memory.CpuData.reduce((partialSum, a) => partialSum + a, 0);
-    let rollingAvg = sum/30;
-    let targetNumberCreeps = Math.floor(15/(rollingAvg/Object.keys(Game.creeps).length));
-    Memory.targetNumberCreeps = targetNumberCreeps;
     console.log('Used CPU: ' + (endcpu - startcpu) + " Moving Average: " + rollingAvg + " Target # Creeps: " + targetNumberCreeps);
-
-
 
 };
