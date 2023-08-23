@@ -1,6 +1,7 @@
 // Example Screeps bot built using creep-tasks
 
 require('creep-tasks');
+require('prototype.tower');
 let rolePeon = require('role.peon');
 
 
@@ -16,6 +17,12 @@ module.exports.loop = function () {
             console.log('INFO: Clearing non-existing creep memory:', name);
         }
     } // end of creep cleaning
+    
+    //run towers
+    let towers = _.filter(Game.structures, s => s.structureType == STRUCTURE_TOWER);
+    for (let tower of towers) {
+        tower.run();
+    }
 
     let spawn = Game.spawns['Spawn1'];
     let creeps = _.values(Game.creeps);
@@ -25,7 +32,15 @@ module.exports.loop = function () {
 
     // Spawn creeps as needed
     if (peons.length < 6) {
-        spawn.spawnCreep([WORK, CARRY, CARRY, MOVE], "Peon" + Game.time);
+        let maxEnergy = spawn.room.energyAvailable;
+        let bodyunit = [WORK, CARRY, MOVE, MOVE];
+        let bodyunitcost = 250;
+        let bodysize = Math.floor(maxEnergy/bodyunitcost);
+        let realbody = [];
+        for (let i = 0; i < bodysize; i++) {
+            realbody = realbody.concat(bodyunit);
+        }
+        spawn.spawnCreep(realbody, "Peon" + Game.time);
     }
 
     // Handle all roles, assigning each creep a new task if they are currently idle
