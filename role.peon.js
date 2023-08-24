@@ -42,7 +42,7 @@ let rolePeon = {
                         } else {
                             //mine some energy....
                             creep.say('Harvesting');
-                            let source = _.sortBy(creep.room.find(FIND_SOURCES), (s) => s.targetedBy.length)[0];
+                            let source = _.sortBy(creep.room.find(FIND_SOURCES_ACTIVE), (s) => s.targetedBy.length)[0];
                             creep.task = Tasks.harvest(source);
                         }
                     }
@@ -52,8 +52,8 @@ let rolePeon = {
             //lets find something to do!
             //fill towers, extensions, spawns?
             let fill = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
-                filter: s => (s.structureType == STRUCTURE_TOWER || s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) &&
-                    s.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && s.targetedBy.length <= 2
+                filter: s => ((s.structureType == STRUCTURE_TOWER || s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) &&
+                    s.store.getFreeCapacity(RESOURCE_ENERGY) > 0 && s.targetedBy.length <= 2)
             });
             if (fill != undefined) {
                 creep.say('Filling');
