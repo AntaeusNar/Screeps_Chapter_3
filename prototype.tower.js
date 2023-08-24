@@ -7,7 +7,7 @@ StructureTower.prototype.run =
       filter: h => h.getActiveBodyparts(HEAL) > 0 && h.pos.findInRange(FIND_HOSTILE_CREEPS, 3) > 0
     });
 
-    //closest hotile attacker
+    //closest hostile attacker
     if (target == undefined) {
       target = this.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {
         filter: h => h.getActiveBodyparts(ATTACK) > 0 || h.getActiveBodyparts(RANGED_ATTACK) > 0
