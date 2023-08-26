@@ -47,7 +47,7 @@ module.exports.loop = function () {
         if (spawn.spawing != null) {
             let idlePeons = peons.filter((p) => p.isIdle).length;
             if (idlePeons == 0) {
-                if (peons.length < Math.floor(targetNumberCreeps/3)) {
+                if (peons.length < Math.floor(targetNumberCreeps/2)) {
                     let maxEnergy = spawn.room.energyAvailable;
                     let bodyunit = [WORK, CARRY, MOVE, MOVE];
                     let bodyunitcost = 250;
