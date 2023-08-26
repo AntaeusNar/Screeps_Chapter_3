@@ -56,15 +56,17 @@ module.exports.loop = function () {
                     for (let i = 0; i < bodysize; i++) {
                         realbody = realbody.concat(bodyunit);
                     }
-                    spawn.spawnCreep(realbody, "Peon" + Game.time);
+                    let name = 'Peon' + Game.time;
+                    console.log("Spawning " + name)
+                    spawn.spawnCreep(realbody, name);
                 } else {
-                    console.log("Too many Peons.");
+                    //console.log("Too many Peons.");
                 }
             } else {
-                console.log(idlePeons+ " Idle Peons, more workers then work.");
+                //console.log(idlePeons+ " Idle Peons, more workers then work.");
             }
         } else {
-            console.log("Spawn is Busy");
+            //console.log("Spawn is Busy");
         }
 
     } //end of creep spawning logic
@@ -84,7 +86,7 @@ module.exports.loop = function () {
     /** Added simply to allow for unused CPU to get converted into in game credits */
     if(Game.cpu.bucket == 10000) {
         Game.cpu.generatePixel();
-        console.log("To much brain power.");
+        console.log("Too much brain power.");
     }
 
     let endcpu = Game.cpu.getUsed();
@@ -92,6 +94,6 @@ module.exports.loop = function () {
     if (length > 30) {
         Memory.CpuData.shift();
     }
-    console.log('Used CPU: ' + (endcpu - startcpu) + " Moving Average: " + rollingAvg + " Target # Creeps: " + targetNumberCreeps);
+    //console.log('Used CPU: ' + (endcpu - startcpu) + " Moving Average: " + rollingAvg + " Target # Creeps: " + targetNumberCreeps);
 
 };
