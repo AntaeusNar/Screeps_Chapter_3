@@ -59,12 +59,6 @@ module.exports.loop = function () {
                     let name = 'Peon' + Game.time;
                     console.log("Spawning " + name + " with a body size of " + realbody.length)
                     spawn.spawnCreep(realbody, name);
-                    //force upgraders to recheck
-                    for (let peon of peons) {
-                        if (peon.task.name == 'upgrade') {
-                            rolePeon.newTask(peon);
-                        }
-                    }
                 } else {
                    //console.log("Too many Peons.");
                 }
