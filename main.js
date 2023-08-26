@@ -44,7 +44,7 @@ module.exports.loop = function () {
 
 
         //Peon Spawning
-        if (spawn.spawing != null) {
+        if (spawn.spawning == null) {
             let idlePeons = peons.filter((p) => p.isIdle).length;
             if (idlePeons == 0) {
                 if (peons.length < Math.floor(targetNumberCreeps/2)) {
@@ -57,10 +57,16 @@ module.exports.loop = function () {
                         realbody = realbody.concat(bodyunit);
                     }
                     let name = 'Peon' + Game.time;
-                    console.log("Spawning " + name)
+                    console.log("Spawning " + name + " with a body size of " + realbody.length)
                     spawn.spawnCreep(realbody, name);
+                    //force upgraders to recheck
+                    for (let peon of peons) {
+                        if (peon.task.name == 'upgrade') {
+                            rolePeon.newTask(peon);
+                        }
+                    }
                 } else {
-                    //console.log("Too many Peons.");
+                   //console.log("Too many Peons.");
                 }
             } else {
                 //console.log(idlePeons+ " Idle Peons, more workers then work.");
