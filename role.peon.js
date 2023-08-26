@@ -47,6 +47,7 @@ let rolePeon = {
                             }), (s) => s.targetedBy.length)[0];
                             if (source != undefined) {
                                 creep.say('Harvesting');
+                                console.log(source.pos.availableNeighbors().length + ' available/targeted ' + source.targetedBy.length);
                                 creep.task = Tasks.harvest(source);
                             }
 
