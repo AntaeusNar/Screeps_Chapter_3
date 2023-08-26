@@ -44,7 +44,7 @@ module.exports.loop = function () {
 
 
         //Peon Spawning
-        if (!spawn.spawing) {
+        if (spawn.spawing != null) {
             let idlePeons = peons.filter((p) => p.isIdle).length;
             if (idlePeons == 0) {
                 if (peons.length < Math.floor(targetNumberCreeps/3)) {
