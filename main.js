@@ -43,18 +43,30 @@ module.exports.loop = function () {
     if (creeps.length < targetNumberCreeps) {
 
 
-        //spawn peons last keeping less then third of all aviable creeps as peons
-        if (spawn.spawing == null && peons.length < Math.floor(targetNumberCreeps/3)) {
-            let maxEnergy = spawn.room.energyAvailable;
-            let bodyunit = [WORK, CARRY, MOVE, MOVE];
-            let bodyunitcost = 250;
-            let bodysize = Math.min(Math.floor(maxEnergy/bodyunitcost), 12);
-            let realbody = [];
-            for (let i = 0; i < bodysize; i++) {
-                realbody = realbody.concat(bodyunit);
+        //Peon Spawning
+        if (!spawn.spawing) {
+            let idlePeons = peons.filter((p) => p.isIdle).length;
+            if (idlePeons == 0) {
+                if (peons.length < Math.floor(targetNumberCreeps/3)) {
+                    let maxEnergy = spawn.room.energyAvailable;
+                    let bodyunit = [WORK, CARRY, MOVE, MOVE];
+                    let bodyunitcost = 250;
+                    let bodysize = Math.min(Math.floor(maxEnergy/bodyunitcost), 12);
+                    let realbody = [];
+                    for (let i = 0; i < bodysize; i++) {
+                        realbody = realbody.concat(bodyunit);
+                    }
+                    spawn.spawnCreep(realbody, "Peon" + Game.time);
+                } else {
+                    console.log("Too many Peons.");
+                }
+            } else {
+                console.log(idlePeons+ " Idle Peons, more workers then work.");
             }
-            spawn.spawnCreep(realbody, "Peon" + Game.time);
+        } else {
+            console.log("Spawn is Busy");
         }
+
     } //end of creep spawning logic
 
     // Handle all roles, assigning each creep a new task if they are currently idle
