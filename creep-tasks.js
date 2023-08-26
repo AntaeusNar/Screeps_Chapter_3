@@ -321,7 +321,7 @@ class TaskBuild extends Task {
     }
 
     isValidTask() {
-        return this.creep.carry.energy > 0;
+        return this.creep.store[RESOURCE_ENERGY] > 0;
     }
 
     isValidTarget() {
@@ -774,37 +774,14 @@ class TaskTransfer extends Task {
 
     isValidTask() {
         let amount = this.data.amount || 1;
-        let resourcesInCarry = this.creep.carry[this.data.resourceType] || 0;
+        let resourcesInCarry = this.creep.store[this.data.resourceType] || 0;
         return resourcesInCarry >= amount;
     }
 
     isValidTarget() {
         let amount = this.data.amount || 1;
         let target = this.target;
-        if (target instanceof Creep) {
-            return _.sum(target.carry) <= target.carryCapacity - amount;
-        }
-        else if (isStoreStructure(target)) {
-            return _.sum(target.store) <= target.storeCapacity - amount;
-        }
-        else if (isEnergyStructure(target) && this.data.resourceType == RESOURCE_ENERGY) {
-            return target.energy <= target.energyCapacity - amount;
-        }
-        else {
-            if (target instanceof StructureLab) {
-                return this.data.resourceType == target.mineralType &&
-                       target.mineralAmount <= target.mineralCapacity - amount;
-            }
-            else if (target instanceof StructureNuker) {
-                return this.data.resourceType == RESOURCE_GHODIUM &&
-                       target.ghodium <= target.ghodiumCapacity - amount;
-            }
-            else if (target instanceof StructurePowerSpawn) {
-                return this.data.resourceType == RESOURCE_POWER &&
-                       target.power <= target.powerCapacity - amount;
-            }
-        }
-        return false;
+        return target.store.getFreeCapacity(this.data.resourceType) >= 1;
     }
 
     work() {
@@ -823,7 +800,7 @@ class TaskUpgrade extends Task {
     }
 
     isValidTask() {
-        return (this.creep.carry.energy > 0);
+        return (this.creep.store[RESOURCE_ENERGY] > 0);
     }
 
     isValidTarget() {
@@ -855,7 +832,7 @@ class TaskDrop extends Task {
 
     isValidTask() {
         let amount = this.data.amount || 1;
-        let resourcesInCarry = this.creep.carry[this.data.resourceType] || 0;
+        let resourcesInCarry = this.creep.store[this.data.resourceType] || 0;
         return resourcesInCarry >= amount;
     }
 
