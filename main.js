@@ -2,6 +2,7 @@
 
 require('creep-tasks');
 require('prototype.tower');
+require('prototype.spawn');
 const rolePeon = require('role.peon');
 
 
