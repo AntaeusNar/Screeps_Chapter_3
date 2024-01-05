@@ -26,8 +26,8 @@ module.exports.loop = function () {
     //Target Number of creeps based on CPU usage
     let sum = Memory.CpuData.reduce((partialSum, a) => partialSum + a, 0);
     let rollingAvg = sum/30;
-    let targetNumberCreeps = Math.floor(15/(rollingAvg/Object.keys(Game.creeps).length));
-    
+    let targetNumberCreeps = Math.max(1, Math.floor(15/(rollingAvg/Object.keys(Game.creeps).length)));
+
     //run towers
     let towers = _.filter(Game.structures, s => s.structureType == STRUCTURE_TOWER);
     for (let tower of towers) {
@@ -42,13 +42,14 @@ module.exports.loop = function () {
 
     // Spawn creeps as needed
     if (creeps.length < targetNumberCreeps) {
+        console.log("Not Enough Creeps");
 
 
         //Peon Spawning
         if (spawn.spawning == null) {
             let idlePeons = peons.filter((p) => p.isIdle).length;
-            if (idlePeons == 0) {
-                if (peons.length < Math.floor(targetNumberCreeps/2)) {
+            if (idlePeons == null |  idlePeons == 0) {
+                if (peons.length < Math.max(1, Math.floor(targetNumberCreeps/2))) {
                     let maxEnergy = spawn.room.energyAvailable;
                     let bodyunit = [WORK, CARRY, MOVE, MOVE];
                     let bodyunitcost = 250;
@@ -61,13 +62,13 @@ module.exports.loop = function () {
                     console.log("Spawning " + name + " with a body size of " + realbody.length)
                     spawn.spawnCreep(realbody, name);
                 } else {
-                   //console.log("Too many Peons.");
+                   console.log("Too many Peons.");
                 }
             } else {
-                //console.log(idlePeons+ " Idle Peons, more workers then work.");
+                console.log(idlePeons+ " Idle Peons, more workers then work.");
             }
         } else {
-            //console.log("Spawn is Busy");
+            console.log("Spawn is Busy");
         }
 
     } //end of creep spawning logic
