@@ -16,7 +16,7 @@ Object.defineProperty(StructureController.prototype, 'memory', {
       Memory.controllers[this.name] = value;
     },
 });
-  
+
 //Add a name
 Object.defineProperty(StructureController.prototype, 'name', {
     get: function() {
@@ -82,15 +82,6 @@ Controller.prototype.find = function() {
     }
     return results;
 }
-  
-
-
-
-
-
-
-
-
 
 /** Given a roomName and a maxDistance from roomName, generates a array of room names within the maxDistance
     * @param {string} roomName
