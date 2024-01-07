@@ -28,4 +28,6 @@ class Dominion {
     set memory(value) {
         Memory.Empire.Dominions[this.name] = value;
     }
-}
+} // End of Dominion
+
+module.exports = Dominion;

@@ -47,4 +47,32 @@ class Empire {
     set memory(value) {
         Memory.Empire = value;
     }
-}
+
+    /**Empire gives Life to Dominions */
+    constructDominions() {
+        let knownDominions = [];
+        //Empire knows its own
+        if (this.memory.Dominions) {
+            for (let dominion of this.memory.dominions.split(',')) {
+                knownDominions.push(dominion);
+            }
+        }
+        //Empire Welcomes All
+        for (let room in Game.rooms) {
+            let evalRoom = Game.rooms[room];
+            if (evalRoom.controller != undefined && evalRoom.controller.my) {
+                if (!knownDominions.includes(room)) {
+                    knownDominions.push(room);
+                }
+            }
+        }
+
+        //Empire breathes Life
+        for (let capitalRoomName of knownDominions) {
+            this.Dominions[capitalRoomName] = new Dominion(capitalRoomName);
+        }
+
+    } //End of constructDominions
+}//End of Empire
+
+module.exports = Empire;
