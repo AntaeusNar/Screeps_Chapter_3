@@ -39,39 +39,48 @@ module.exports.loop = function () {
 
     // Separate creeps by role
     let peons = _.filter(creeps, creep => creep.name.includes("Peon"));
+    // Get idle Peons
+    let idlePeons = peons.filter((p) => p.isIdle).length;
+    // Get maxEnergy
+    let maxEnergy = spawn.room.energyAvailable;
 
-    // Spawn creeps as needed
+    //some messaging
+    let spawnPeon = false;
+    let spawnMessage = "";
+
+
+    //Spawning Control Logic
     if (creeps.length < targetNumberCreeps) {
-        console.log("Not Enough Creeps");
-
-
-        //Peon Spawning
+        //Can have more creeps based on left over cpu
+        spawnMessage = "CPU can support more Creeps,";
         if (spawn.spawning == null) {
-            let idlePeons = peons.filter((p) => p.isIdle).length;
-            if (idlePeons == null |  idlePeons == 0) {
-                if (peons.length < Math.max(1, Math.floor(targetNumberCreeps/2))) {
-                    let maxEnergy = spawn.room.energyAvailable;
-                    let bodyunit = [WORK, CARRY, MOVE, MOVE];
-                    let bodyunitcost = 250;
-                    let bodysize = Math.min(Math.floor(maxEnergy/bodyunitcost), 12);
-                    let realbody = [];
-                    for (let i = 0; i < bodysize; i++) {
-                        realbody = realbody.concat(bodyunit);
-                    }
-                    let name = 'Peon' + Game.time;
-                    console.log("Spawning " + name + " with a body size of " + realbody.length)
-                    spawn.spawnCreep(realbody, name);
-                } else {
-                   console.log("Too many Peons.");
+            //Spawner is ready
+            spawnMessage = spawnMessage + " spawner is ready,";
+            if (idlePeons == null) {
+                //All Peons are busy
+                spawnMessage = spawnMessage + " there is more work then Peons,";
+                if (maxEnergy >= 250) {
+                    spawnMessage = spawnMessage + " and we have enough energy for a basic Peon.";
+                    spawnPeon = true;
                 }
-            } else {
-                console.log(idlePeons+ " Idle Peons, more workers then work.");
             }
-        } else {
-            console.log("Spawn is Busy");
         }
+    }
 
-    } //end of creep spawning logic
+    if (spawnPeon) {
+        console.log(spawnMessage);
+        let bodyunit = [WORK, CARRY, MOVE, MOVE];
+        let bodyunitcost = 250;
+        let bodysize = Math.min(Math.floor(maxEnergy/bodyunitcost), 12);
+        let realbody = [];
+        for (let i = 0; i < bodysize; i++) {
+            realbody = realbody.concat(bodyunit);
+        }
+        let name = 'Peon' + Game.time;
+        console.log("Spawning " + name + " with a body size of " + realbody.length)
+        spawn.spawnCreep(realbody, name);
+    }
+    //End of Spawning logic
 
     // Handle all roles, assigning each creep a new task if they are currently idle
     for (let peon of peons) {
