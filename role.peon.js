@@ -6,7 +6,7 @@ let rolePeon = {
     newTask: function (creep) {
         if (creep.carry.energy == 0) {
             //when completely out of energy...
-            
+
             //Look for dropped?
             let pickup = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
                 filter: r => r.resourceType == RESOURCE_ENERGY
@@ -73,7 +73,7 @@ let rolePeon = {
                 } else {
                     //upgrade that tower...
                     creep.say('Upgrading');
-                    creep.task = Tasks.upgrade(creep.room.controller);                    
+                    creep.task = Tasks.upgrade(creep.room.controller);
                 }
 
             }
