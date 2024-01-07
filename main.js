@@ -11,6 +11,12 @@ console.log('<<<< Global Restart Event >>>>');
 if (Memory.CpuData == undefined) {
     Memory.CpuData = [];
 }
+if (Memory.Status == undefined) {
+    Memory.Status = {};
+}
+if (Memory.Status.Message == undefined) {
+    Memory.Status.Message = "";
+}
 
 module.exports.loop = function () {
     let startcpu = Game.cpu.getUsed();
@@ -73,7 +79,10 @@ module.exports.loop = function () {
         }
     }
 
-    console.log(spawnMessage);
+    if (Memory.Status.Message =! spawnMessage) {
+        console.log(spawnMessage);
+        Memory.Status.Message = spawnMessage;
+    }
 
     if (spawnPeon) {
         let bodyunit = [WORK, CARRY, MOVE, MOVE];
@@ -104,7 +113,7 @@ module.exports.loop = function () {
     /** Added simply to allow for unused CPU to get converted into in game credits */
     if(Game.cpu.bucket == 10000) {
         Game.cpu.generatePixel();
-        console.log("Too much brain power.");
+        console.log("Extra CPU, Generating Pixel.");
     }
 
     let endcpu = Game.cpu.getUsed();
