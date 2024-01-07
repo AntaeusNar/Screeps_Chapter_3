@@ -72,14 +72,14 @@ module.exports.loop = function () {
                     spawnMessage = spawnMessage + " but there is not enough energy.";
                 }
             } else {
-                spawnMessage = spawnMessage + " but there idle Peons.";
+                spawnMessage = spawnMessage + " but there are idle Peons.";
             }
         } else {
             spawnMessage = spawnMessage + " but the Spawner is busy.";
         }
     }
 
-    if (Memory.Status.Message =! spawnMessage) {
+    if (Memory.Status.Message != spawnMessage) {
         console.log(spawnMessage);
         Memory.Status.Message = spawnMessage;
     }

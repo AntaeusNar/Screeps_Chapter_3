@@ -43,7 +43,7 @@ let rolePeon = {
                             //mine some energy....
 
                             let source = _.sortBy(creep.room.find(FIND_SOURCES_ACTIVE,{
-                                filter: (s) => s.pos.availableNeighbors().length >= s.targetedBy.length
+                                filter: (s) => s.pos.availableNeighbors().length > s.targetedBy.length
                             }), (s) => s.targetedBy.length)[0];
                             if (source != undefined) {
                                 creep.say('Harvesting');
