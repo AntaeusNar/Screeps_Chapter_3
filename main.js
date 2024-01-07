@@ -56,19 +56,26 @@ module.exports.loop = function () {
         if (spawn.spawning == null) {
             //Spawner is ready
             spawnMessage = spawnMessage + " spawner is ready,";
-            if (idlePeons == null) {
+            if (idlePeons == null | idlePeons == 0) {
                 //All Peons are busy
                 spawnMessage = spawnMessage + " there is more work then Peons,";
                 if (maxEnergy >= 250) {
                     spawnMessage = spawnMessage + " and we have enough energy for a basic Peon.";
                     spawnPeon = true;
+                } else {
+                    spawnMessage = spawnMessage + " but there is not enough energy.";
                 }
+            } else {
+                spawnMessage = spawnMessage + " but there idle Peons.";
             }
+        } else {
+            spawnMessage = spawnMessage + " but the Spawner is busy.";
         }
     }
 
+    console.log(spawnMessage);
+
     if (spawnPeon) {
-        console.log(spawnMessage);
         let bodyunit = [WORK, CARRY, MOVE, MOVE];
         let bodyunitcost = 250;
         let bodysize = Math.min(Math.floor(maxEnergy/bodyunitcost), 12);
