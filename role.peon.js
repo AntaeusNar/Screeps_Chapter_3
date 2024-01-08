@@ -45,8 +45,10 @@ let rolePeon = {
                             let source = _.sortBy(creep.room.find(FIND_SOURCES_ACTIVE,{
                                 filter: (s) => s.pos.availableNeighbors().length > s.targetedBy.length
                             }), (s) => s.targetedBy.length)[0];
+
                             if (source != undefined) {
                                 creep.say('Harvesting');
+                                console.log("Source: " + source.id + " Targeted by: " + source.targetedBy.length + " AvailableNeighbors: " + source.pos.availableNeighbors().length);
                                 creep.task = Tasks.harvest(source);
                             }
 

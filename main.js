@@ -19,6 +19,7 @@ if (Memory.Status.Message == undefined) {
 }
 
 module.exports.loop = function () {
+    //console.log("Start Tick: " + Game.time);
     let startcpu = Game.cpu.getUsed();
 
     //Clean memory
